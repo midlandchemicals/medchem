@@ -13,7 +13,7 @@ const product = {
   ],
 };
 
-export default function Products() {
+export default function ProductImg() {
   return (
     <div className="relative w-[430px] mx-auto">
       {/* Bottle Image */}
@@ -80,7 +80,7 @@ export default function Products() {
           </div>
 
           {/* Available Sizes */}
-          <div className="mb-1 pt-3">
+          <div className="mb-1 pb-2 pt-3">
             <div className="flex flex-wrap gap-0.5">
               {product.sizes.map((size) => (
                 <span
@@ -93,13 +93,7 @@ export default function Products() {
             </div>
           </div>
 
-          {/* Footer Information */}
-          <div className="border-t border-blue-200 pt-0.5">
-            <div className="flex justify-between items-center text-xs text-gray-600">
-              <span className="font-medium">Made in U.K</span>
-              <span>Batch: MC2024</span>
-            </div>
-          </div>
+          <div className="border-t border-blue-200 py-4"></div>
         </div>
       </div>
     </div>

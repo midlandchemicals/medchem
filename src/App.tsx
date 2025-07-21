@@ -3,7 +3,8 @@ import { ContactSection } from "./components/ContactSection";
 import { Footer } from "./components/Footer";
 import { HeroSection } from "./components/HeroSection";
 import { Navigation } from "./components/Navigation";
-import Products from "./components/Products";
+import ProductCatalog from "./components/ProductCatalouge";
+
 import { ProductsSection } from "./components/ProductsSection";
 import { ServicesSection } from "./components/ServicesSection";
 import { Routes, Route } from "react-router-dom";
@@ -27,7 +28,7 @@ function App() {
           </div>
         }
       />
-      <Route path="/products" element={<Products />} />
+      <Route path="/products" element={<ProductCatalog />} />
     </Routes>
   );
 }
