@@ -1,12 +1,22 @@
 import { useState } from "react";
 import ProductImg from "./ProductImg";
 import useProductStore from "../store";
+import { useNavigate } from "react-router-dom";
+import type { ComponentType, SVGProps } from "react";
+type Application = {
+  icon: ComponentType<SVGProps<SVGSVGElement>>; // any Heroicon or Lucide icon
+  text: string;
+};
 
 export type productDetails = {
+  id: string;
   code: string;
   name: string;
   description: string;
   highlights: string[];
+  features: string[];
+  applications: Application[];
+  surfaces: string[];
 };
 
 const backgroundColors: { [key: string]: string } = {
@@ -30,8 +40,14 @@ const getBgClass = (code: string) => {
 const ProductCard: React.FC<{ product: productDetails }> = ({ product }) => {
   const [card, setCard] = useState<null | string>(null);
   const { selectedChemical } = useProductStore();
+  const navigate = useNavigate();
+
+  const handleClick = (id: string) => {
+    navigate(`/products/${id}`);
+  };
   return (
     <div
+      onClick={() => handleClick(product.id)}
       onMouseEnter={() => setCard(product.name)}
       onMouseLeave={() => setCard(null)}
       className="rounded-xl relative border p-6 cursor-pointer"

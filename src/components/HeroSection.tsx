@@ -1,8 +1,10 @@
 import { Button } from "./ui/button";
 import { ArrowRight, Shield, Award, Globe } from "lucide-react";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
+import { useNavigate } from "react-router-dom";
 
 export function HeroSection() {
+  const navigate = useNavigate();
   return (
     <section
       id="home"
@@ -27,6 +29,7 @@ export function HeroSection() {
               <Button
                 size="lg"
                 className="group px-8 py-4 cursor-pointer text-lg h-auto"
+                onClick={() => navigate("/products")}
               >
                 View Our Products
                 <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />

@@ -1,0 +1,459 @@
+import {
+  Mail,
+  Phone,
+  User,
+  CheckCircle,
+  Sparkles,
+  Star,
+  Shield,
+  Droplets,
+  Building2,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+
+import ProductImg from "./ProductImg";
+import { useParams } from "react-router-dom";
+import { chemicals } from "../utils/chemicals";
+import logo from "../assets/logo.png";
+
+const availableSizes = [
+  {
+    size: "5L",
+    label: "5 Litres",
+    description: "Perfect for small offices and facilities",
+    popular: false,
+  },
+  {
+    size: "10L",
+    label: "10 Litres",
+    description: "Ideal for medium-sized establishments",
+    popular: true,
+  },
+  {
+    size: "25L",
+    label: "25 Litres",
+    description: "Great for large facilities and hotels",
+    popular: false,
+  },
+  {
+    size: "200L",
+    label: "200 Litres",
+    description: "Industrial grade for large operations",
+    popular: false,
+  },
+  {
+    size: "1000L",
+    label: "1000 Litres",
+    description: "Bulk supply for industrial facilities",
+    popular: false,
+  },
+];
+
+const ProductDetail = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+
+  const [selectedSize, setSelectedSize] = useState("5L");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const params = useParams();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  function findProductById(id: string) {
+    return Object.values(chemicals)
+      .flat()
+      .find((product) => product.id === id);
+  }
+
+  // Example usage:
+
+  const product = params.id ? findProductById(params?.id) : "";
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = () => {
+    if (formData.name && formData.email && formData.phone) {
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ name: "", email: "", phone: "" });
+      }, 3000);
+    }
+  };
+  if (!product) return "Loading...";
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Header */}
+      <header className="bg-white shadow-lg border-b-4 border-blue-600">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div>
+                <img src={logo} className="lg:h-18 h-12 w-20 lg:w-40" alt="" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800">
+                  Midchem Speciality
+                </h1>
+                <p className="text-sm text-blue-600 font-medium">
+                  Professional Cleaning Solutions
+                </p>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="bg-blue-100 text-nowrap text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                Product Code: {product.code}
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="max-w-[1300px] mx-auto px-6 py-12">
+        {/* Product Hero Section */}
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+            {/* Product Image */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 flex items-center justify-center">
+              <div className="relative">
+                <div className="lg:w-140 lg:h-170 w-120 h-150  bg-white rounded-2xl shadow-2xl p-6 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="lg:w-120 w-100 h-120 lg:h-140 bg-gray-100 rounded-lg mb-4 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-b from-blue-400 to-blue-600 opacity-10"></div>
+                      <div className="absolute top-0 left-4 right-4">
+                        <div className="bg-blue-600 text-white my-4 px-3 py-1 rounded-full text-xs font-semibold mb-2">
+                          FOOD CHEMICAL
+                        </div>
+                        <div className="rounded-2xl overflow-hidden">
+                          <ProductImg product={product}></ProductImg>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      Professional Grade Container
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
+                  <Sparkles className="w-8 h-8 text-white" />
+                </div>
+              </div>
+            </div>
+
+            {/* Product Information */}
+            <div className="p-8">
+              <div className="mb-6">
+                <div className="flex items-center space-x-2 mb-4">
+                  <div className="flex text-yellow-400">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className="w-5 h-5 fill-current" />
+                    ))}
+                  </div>
+                  <span className="text-sm text-gray-600">
+                    Professional Grade
+                  </span>
+                </div>
+                <h2 className="text-4xl font-bold text-gray-800 mb-4">
+                  {product.name}
+                </h2>
+                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  {product.description}
+                </p>
+              </div>
+
+              {/* Key Highlights */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                  Key Benefits
+                </h3>
+                <div className="grid grid-cols-1 gap-3">
+                  {product.highlights.map((highlight, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center space-x-3 bg-blue-50 p-3 rounded-lg"
+                    >
+                      <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                      <span className="text-gray-700 font-medium">
+                        {highlight}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Size Selection */}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                  Available Sizes
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                  {availableSizes.map((sizeOption) => (
+                    <div
+                      key={sizeOption.size}
+                      onClick={() => setSelectedSize(sizeOption.size)}
+                      className={`relative cursor-pointer p-4 rounded-xl border-2 transition-all duration-200 hover:shadow-lg ${
+                        selectedSize === sizeOption.size
+                          ? "border-blue-500 bg-blue-50 shadow-lg"
+                          : "border-gray-200 bg-white hover:border-blue-300"
+                      }`}
+                    >
+                      {sizeOption.popular && (
+                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                          <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                            Popular
+                          </span>
+                        </div>
+                      )}
+                      <div className="text-center">
+                        <div
+                          className={`text-2xl font-bold mb-1 ${
+                            selectedSize === sizeOption.size
+                              ? "text-blue-600"
+                              : "text-gray-800"
+                          }`}
+                        >
+                          {sizeOption.size}
+                        </div>
+                        <div
+                          className={`text-sm font-medium mb-2 ${
+                            selectedSize === sizeOption.size
+                              ? "text-blue-700"
+                              : "text-gray-600"
+                          }`}
+                        >
+                          {sizeOption.label}
+                        </div>
+                        <div
+                          className={`text-xs ${
+                            selectedSize === sizeOption.size
+                              ? "text-blue-600"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {sizeOption.description}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                  <p className="text-sm text-blue-800">
+                    <strong>Selected:</strong>{" "}
+                    {availableSizes.find((s) => s.size === selectedSize)?.label}{" "}
+                    -
+                    {
+                      availableSizes.find((s) => s.size === selectedSize)
+                        ?.description
+                    }
+                  </p>
+                </div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
+                  <Droplets className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <div className="text-sm font-semibold text-gray-800">
+                    Ready to Use
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl">
+                  <Shield className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                  <div className="text-sm font-semibold text-gray-800">
+                    Safe Formula
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl">
+                  <Sparkles className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                  <div className="text-sm font-semibold text-gray-800">
+                    Streak-Free
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Detailed Features & Applications */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          {/* Features */}
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+              <Sparkles className="w-6 h-6 text-blue-600 mr-2" />
+              Product Features
+            </h3>
+            <div className="space-y-4">
+              {product.features.map((feature, index) => (
+                <div key={index} className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Applications */}
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+              <Building2 className="w-6 h-6 text-green-600 mr-2" />
+              Ideal Applications
+            </h3>
+            <div className="space-y-4 mb-6">
+              {product.applications.map((app, i) => {
+                const Icon = app.icon;
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <Icon className="w-5 h-5 text-blue-500" />
+                    <span>{app.text}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            <h4 className="text-lg font-semibold text-gray-800 mb-4">
+              Suitable Surfaces
+            </h4>
+            <div className="grid grid-cols-1 gap-2">
+              {product.surfaces.map((surface, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span className="text-sm text-gray-600">{surface}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Inquiry Form */}
+        <div className="bg-white rounded-2xl shadow-2xl border border-gray-200">
+          <div className="p-8">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                Request Product Information
+              </h2>
+              <p className="text-lg text-gray-600">
+                Interested in Crystal Clear Glass Cleaner? Get detailed pricing
+                and availability information.
+              </p>
+            </div>
+
+            {isSubmitted ? (
+              <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
+                <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-green-800 mb-2">
+                  Thank You!
+                </h3>
+                <p className="text-green-700">
+                  Your inquiry for Crystal Clear Glass Cleaner ({selectedSize})
+                  has been submitted successfully. Our team will contact you
+                  soon with detailed information!
+                </p>
+              </div>
+            ) : (
+              <div className="max-w-2xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Full Name *
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        placeholder="Enter your full name"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Phone Number *
+                    </label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        placeholder="Enter your phone number"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Email Address *
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="Enter your email address"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleSubmit}
+                  className="w-full  bg-[#2563eb] text-white font-bold py-4 px-8 rounded-lg cursor-pointer transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  Request Product Information
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-8 mt-16">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <div className="flex items-center justify-center space-x-4 mb-4">
+            <div>
+              <img src={logo} className="lg:h-18 h-12 w-20 lg:w-40" alt="" />
+            </div>
+            <span className="text-xl font-bold">Midchem Speciality</span>
+          </div>
+          <p className="text-gray-400">
+            Professional Glass Cleaning Solutions - Crystal Clear Results
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default ProductDetail;

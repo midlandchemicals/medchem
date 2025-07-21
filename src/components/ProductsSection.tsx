@@ -13,8 +13,10 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { ImageWithFallback } from "./ui/ImageWithFallback";
+import { useNavigate } from "react-router-dom";
 
 export function ProductsSection() {
+  const navigate = useNavigate();
   const industryCategories = [
     {
       id: 1,
@@ -268,6 +270,7 @@ export function ProductsSection() {
                     <Button
                       variant="outline"
                       className="w-full cursor-pointer py-3 text-base"
+                      onClick={() => navigate("/products")}
                     >
                       Learn More
                     </Button>

@@ -8,6 +8,7 @@ import ProductCatalog from "./components/ProductCatalouge";
 import { ProductsSection } from "./components/ProductsSection";
 import { ServicesSection } from "./components/ServicesSection";
 import { Routes, Route } from "react-router-dom";
+import ProductDetail from "./components/ProductDetail";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         }
       />
       <Route path="/products" element={<ProductCatalog />} />
+      <Route path="/products/:id" element={<ProductDetail />} />
     </Routes>
   );
 }

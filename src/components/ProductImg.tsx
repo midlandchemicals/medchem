@@ -23,7 +23,7 @@ const ProductImg: React.FC<{ product: productDetails }> = ({ product }) => {
       <img
         src={bottleImages[selectedChemical as keyof typeof bottleImages]}
         alt="Product bottle"
-        className="w-fit h-auto"
+        className="w-fit rounded-xl overflow-hidden h-auto"
       />
       {/* Label Overlay */}
       <div
@@ -39,7 +39,7 @@ const ProductImg: React.FC<{ product: productDetails }> = ({ product }) => {
             {selectedChemical}
           </span>
         </div>
-        <div className="flex flex-col">
+        <div className="flex items-start flex-col">
           {product.highlights.map((val: string) => {
             return <li className="text-xs text-nowrap">{val}</li>;
           })}

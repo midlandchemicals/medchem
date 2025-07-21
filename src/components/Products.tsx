@@ -5,7 +5,7 @@ import ProductCard from "./ProductCard";
 const Products = () => {
   const { selectedChemical } = useProductStore();
   return (
-    <div className="bg-white px-16 pb-16 pt-5">
+    <div className="bg-white px-10 2xl:px-16 pb-16 pt-5">
       <h2 className="text-2xl py-10">{selectedChemical}</h2>
       <div className="grid gap-26 xl:gap-4 gap-y-8 grid-cols-3 xl:grid-cols-4">
         {chemicals[selectedChemical as keyof typeof chemicals].map((val, i) => (
