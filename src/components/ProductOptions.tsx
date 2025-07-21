@@ -1,18 +1,15 @@
-import { useState } from "react";
 import { chemicals, icons } from "../utils/chemicals";
+import useProductStore from "../store";
 
 const ProductOptions = () => {
-  const [selectedChemical, setSelectedChemicals] = useState(
-    "Automotive Chemicals"
-  );
-  console.log(selectedChemical);
+  const { selectedChemical, setSelectedChemical } = useProductStore();
 
   return (
-    <div className="p-6 px-16 bg-white">
+    <div className="p-6 px-16 py-8 border-b bg-white">
       <div className="grid gap-y-1 p-4  grid-cols-4  rounded-2xl bg-[#F3F4FB]">
         {Object.keys(chemicals).map((val, i) => (
           <div
-            onClick={() => setSelectedChemicals(val)}
+            onClick={() => setSelectedChemical(val)}
             key={i}
             className={`flex gap-2 cursor-pointer items-center px-10 justify-start ${
               val === selectedChemical ? "bg-white shadow rounded" : ""

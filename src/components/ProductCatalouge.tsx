@@ -1,4 +1,5 @@
 import ProductOptions from "./ProductOptions";
+import Products from "./Products";
 
 const ProductCatalouge = () => {
   return (
@@ -11,6 +12,7 @@ const ProductCatalouge = () => {
         </p>
       </header>
       <ProductOptions></ProductOptions>
+      <Products></Products>
     </div>
   );
 };
