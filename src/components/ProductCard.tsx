@@ -2,7 +2,7 @@ import { useState } from "react";
 import ProductImg from "./ProductImg";
 import useProductStore from "../store";
 
-type productDetails = {
+export type productDetails = {
   code: string;
   name: string;
   description: string;
@@ -37,14 +37,14 @@ const ProductCard: React.FC<{ product: productDetails }> = ({ product }) => {
       className="rounded-xl relative border p-6 cursor-pointer"
     >
       <span
-        className={`absolute bg- top-8 bg right-8 font-bold px-4 rounded-full p-2 z-10 text-sm text-white ${getBgClass(
+        className={`absolute  top-8 bg right-8 font-bold px-4 rounded-full p-2 z-10 text-sm text-white ${getBgClass(
           product.code
         )}`}
       >
         {product.code}
       </span>
       <div className=" flex items-center h-100 w-80 rounded-xl overflow-hidden">
-        <ProductImg></ProductImg>
+        <ProductImg product={product}></ProductImg>
       </div>
       <div className="py-5">
         <div className="flex flex-col gap-y-2">
