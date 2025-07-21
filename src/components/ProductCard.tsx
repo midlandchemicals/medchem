@@ -9,7 +9,7 @@ export type productDetails = {
   highlights: string[];
 };
 
-const backgroundColors = {
+const backgroundColors: { [key: string]: string } = {
   KC: "bg-amber-600",
   AC: "bg-red-400",
   BR: "bg-yellow-600",

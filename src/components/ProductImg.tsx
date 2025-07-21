@@ -21,14 +21,14 @@ const ProductImg: React.FC<{ product: productDetails }> = ({ product }) => {
     <div className="relative w-[280px] flex   mx-auto">
       {/* Bottle Image */}
       <img
-        src={bottleImages[selectedChemical]}
+        src={bottleImages[selectedChemical as keyof typeof bottleImages]}
         alt="Product bottle"
         className="w-fit h-auto"
       />
       {/* Label Overlay */}
       <div
         className={`w-[85%] shadow-2xl py-2 rounded-xl flex flex-col gap-y-2 absolute ${
-          topLen[selectedChemical] || "top-62"
+          topLen[selectedChemical as keyof typeof topLen] || "top-62"
         } left-1/2 -translate-x-1/2 z-10 px-4 border bg-[#f3f3f3] h-auto`}
       >
         <div className="flex justify-between">
