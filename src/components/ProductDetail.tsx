@@ -12,9 +12,10 @@ import {
 import { useEffect, useState } from "react";
 
 import ProductImg from "./ProductImg";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { chemicals } from "../utils/chemicals";
 import logo from "../assets/logo.png";
+import useProductStore from "../store";
 
 const availableSizes = [
   {
@@ -54,6 +55,15 @@ const ProductDetail = () => {
     name: "",
     email: "",
     phone: "",
+    requirement: "",
+    productCode: "",
+  });
+
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    requirement: "",
   });
 
   const [selectedSize, setSelectedSize] = useState("5L");
@@ -70,34 +80,122 @@ const ProductDetail = () => {
       .find((product) => product.id === id);
   }
 
-  // Example usage:
-
-  const product = params.id ? findProductById(params?.id) : "";
+  const product = params.id ? findProductById(params.id) : null;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
-  };
 
-  const handleSubmit = () => {
-    if (formData.name && formData.email && formData.phone) {
-      setIsSubmitted(true);
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({ name: "", email: "", phone: "" });
-      }, 3000);
+    // Clear error when user starts typing
+    if (errors[name as keyof typeof errors]) {
+      setErrors({
+        ...errors,
+        [name]: "",
+      });
     }
   };
-  if (!product) return "Loading...";
+
+  const validateForm = () => {
+    const newErrors = {
+      name: "",
+      email: "",
+      phone: "",
+      requirement: "",
+    };
+
+    let isValid = true;
+
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = "This field is required";
+      isValid = false;
+    }
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = "This field is required";
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+      isValid = false;
+    }
+
+    // Phone validation
+    if (!formData.phone.trim()) {
+      newErrors.phone = "This field is required";
+      isValid = false;
+    }
+
+    // Requirement validation
+    if (!formData.requirement.trim()) {
+      newErrors.requirement = "This field is required";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+  const navigate = useNavigate();
+  const { selectedChemical } = useProductStore();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    const form = e.target as HTMLFormElement;
+    const formDataObj = new FormData(form);
+    formDataObj.append("productCode", product?.code || "");
+    formDataObj.append("selectedSize", selectedSize);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xrblpgvd", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        body: formDataObj,
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          requirement: "",
+          productCode: "",
+        });
+        setErrors({
+          name: "",
+          email: "",
+          phone: "",
+          requirement: "",
+        });
+      } else {
+        alert("Something went wrong!");
+      }
+    } catch (error) {
+      alert(`Network error ${error}. Please try again!`);
+    }
+  };
+
+  if (product === null) return "Loading...";
   return (
     <div className="min-h-[100dvh] flex flex-col bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
       <header className="bg-white shadow-lg border-b-4 border-blue-600">
         <div className="max-w-7xl mx-auto  px-6 py-6">
           <div className="flex md:flex-row flex-col space-y-2 md:space-y-0 items-start md:items-center justify-start md:justify-between">
-            <div className="flex items-center space-x-4">
+            <div
+              onClick={() => navigate("/")}
+              className="flex cursor-pointer items-center space-x-4"
+            >
               <div>
                 <img src={logo} className="lg:h-18 h-12 w-20 lg:w-40" alt="" />
               </div>
@@ -112,7 +210,7 @@ const ProductDetail = () => {
             </div>
             <div className="md:text-right">
               <span className="bg-blue-100 text-nowrap text-blue-800 px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
-                Product Code: {product.code}
+                Product Code: {product?.code}
               </span>
             </div>
           </div>
@@ -131,10 +229,12 @@ const ProductDetail = () => {
                     <div className="lg:w-120 w-90 md:w-100 h-140 lg:h-140 px-2 bg-gray-100 rounded-lg mb-4 relative overflow-hidden">
                       <div className="absolute top-0 left-4 right-4">
                         <div className="bg-blue-600 text-white my-4 px-3 py-1 rounded-full text-xs font-semibold mb-2">
-                          FOOD CHEMICAL
+                          {selectedChemical}
                         </div>
                         <div className="rounded-2xl overflow-hidden">
-                          <ProductImg product={product}></ProductImg>
+                          {product && (
+                            <ProductImg product={product}></ProductImg>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -163,10 +263,10 @@ const ProductDetail = () => {
                   </span>
                 </div>
                 <h2 className="text-4xl font-bold text-gray-800 mb-4">
-                  {product.name}
+                  {product?.name}
                 </h2>
                 <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                  {product.description}
+                  {product?.description}
                 </p>
               </div>
 
@@ -176,7 +276,7 @@ const ProductDetail = () => {
                   Key Benefits
                 </h3>
                 <div className="grid grid-cols-1 gap-3">
-                  {product.highlights.map((highlight, index) => (
+                  {product?.highlights.map((highlight, index) => (
                     <div
                       key={index}
                       className="flex items-center space-x-3 bg-blue-50 p-3 rounded-lg"
@@ -292,7 +392,7 @@ const ProductDetail = () => {
               Product Features
             </h3>
             <div className="space-y-4">
-              {product.features.map((feature, index) => (
+              {product?.features.map((feature, index) => (
                 <div key={index} className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
                   <span className="text-gray-700">{feature}</span>
@@ -308,7 +408,7 @@ const ProductDetail = () => {
               Ideal Applications
             </h3>
             <div className="space-y-4 mb-6">
-              {product.applications.map((app, i) => {
+              {product?.applications.map((app, i) => {
                 const Icon = app.icon;
                 return (
                   <div key={i} className="flex items-center gap-2">
@@ -323,7 +423,7 @@ const ProductDetail = () => {
               Suitable Surfaces
             </h4>
             <div className="grid grid-cols-1 gap-2">
-              {product.surfaces.map((surface, index) => (
+              {product?.surfaces.map((surface, index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <CheckCircle className="w-4 h-4 text-green-500" />
                   <span className="text-sm text-gray-600">{surface}</span>
@@ -341,8 +441,8 @@ const ProductDetail = () => {
                 Request Product Information
               </h2>
               <p className="text-lg text-gray-600">
-                Interested in Crystal Clear Glass Cleaner? Get detailed pricing
-                and availability information.
+                {`  Interested in ${product?.name}? Get detailed pricing
+                and availability information.`}
               </p>
             </div>
 
@@ -353,85 +453,157 @@ const ProductDetail = () => {
                   Thank You!
                 </h3>
                 <p className="text-green-700">
-                  Your inquiry for Crystal Clear Glass Cleaner ({selectedSize})
-                  has been submitted successfully. Our team will contact you
-                  soon with detailed information!
+                  Your inquiry for ({product?.name}) ({selectedSize}) has been
+                  submitted successfully. Our team will contact you soon with
+                  detailed information!
                 </p>
               </div>
             ) : (
-              <div className="max-w-2xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-semibold text-gray-700 mb-2"
-                    >
-                      Full Name *
-                    </label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                        placeholder="Enter your full name"
-                      />
+              <form id="inquiry-form" onSubmit={handleSubmit}>
+                <div className="max-w-2xl mx-auto">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Full Name *
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <input
+                          type="text"
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                            errors.name
+                              ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                              : "border-gray-300"
+                          }`}
+                          placeholder="Enter your full name"
+                        />
+                      </div>
+                      {errors.name && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.name}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="phone"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Phone Number *
+                      </label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <input
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                            errors.phone
+                              ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                              : "border-gray-300"
+                          }`}
+                          placeholder="Enter your phone number"
+                        />
+                      </div>
+                      {errors.phone && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.phone}
+                        </p>
+                      )}
                     </div>
                   </div>
 
-                  <div>
+                  <div className="mb-6">
                     <label
-                      htmlFor="phone"
+                      htmlFor="email"
                       className="block text-sm font-semibold text-gray-700 mb-2"
                     >
-                      Phone Number *
+                      Email Address *
                     </label>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                       <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                        placeholder="Enter your phone number"
+                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                          errors.email
+                            ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                            : "border-gray-300"
+                        }`}
+                        placeholder="Enter your email address"
                       />
                     </div>
+                    {errors.email && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
-                </div>
 
-                <div className="mb-6">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  <div className="mb-6">
+                    <label
+                      htmlFor="requirement"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Requirement Details *
+                    </label>
+                    <div className="relative">
+                      <textarea
+                        id="requirement"
+                        name="requirement"
+                        value={formData.requirement}
+                        onChange={(e) => {
+                          const { name, value } = e.target;
+                          setFormData({
+                            ...formData,
+                            [name]: value,
+                          });
+
+                          // Clear error when user starts typing
+                          if (errors[name as keyof typeof errors]) {
+                            setErrors({
+                              ...errors,
+                              [name]: "",
+                            });
+                          }
+                        }}
+                        rows={4}
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical ${
+                          errors.requirement
+                            ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                            : "border-gray-300"
+                        }`}
+                        placeholder="Tell us about your requirements"
+                      />
+                    </div>
+                    {errors.requirement && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.requirement}
+                      </p>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-[#2563eb] text-white font-bold py-4 px-8 rounded-lg cursor-pointer transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
-                    Email Address *
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                      placeholder="Enter your email address"
-                    />
-                  </div>
+                    Request Product Information
+                  </button>
                 </div>
-
-                <button
-                  onClick={handleSubmit}
-                  className="w-full  bg-[#2563eb] text-white font-bold py-4 px-8 rounded-lg cursor-pointer transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
-                >
-                  Request Product Information
-                </button>
-              </div>
+              </form>
             )}
           </div>
         </div>
