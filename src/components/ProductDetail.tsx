@@ -92,26 +92,26 @@ const ProductDetail = () => {
   };
   if (!product) return "Loading...";
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-[100dvh] flex flex-col bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
       <header className="bg-white shadow-lg border-b-4 border-blue-600">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto  px-6 py-6">
+          <div className="flex md:flex-row flex-col space-y-2 md:space-y-0 items-start md:items-center justify-start md:justify-between">
             <div className="flex items-center space-x-4">
               <div>
                 <img src={logo} className="lg:h-18 h-12 w-20 lg:w-40" alt="" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">
+                <h1 className="lg:text-2xl text-nowrap text-xl font-bold text-gray-800">
                   Midchem Speciality
                 </h1>
-                <p className="text-sm text-blue-600 font-medium">
+                <p className="md:text-sm text-xs text-blue-600 font-medium">
                   Professional Cleaning Solutions
                 </p>
               </div>
             </div>
-            <div className="text-right">
-              <span className="bg-blue-100 text-nowrap text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+            <div className="md:text-right">
+              <span className="bg-blue-100 text-nowrap text-blue-800 px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
                 Product Code: {product.code}
               </span>
             </div>
@@ -119,17 +119,16 @@ const ProductDetail = () => {
         </div>
       </header>
 
-      <div className="max-w-[1300px] mx-auto px-6 py-12">
+      <div className="max-w-[1300px] mx-auto px-6 py-12 flex-grow">
         {/* Product Hero Section */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden mb-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             {/* Product Image */}
             <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 flex items-center justify-center">
               <div className="relative">
-                <div className="lg:w-140 lg:h-170 w-120 h-150  bg-white rounded-2xl shadow-2xl p-6 flex items-center justify-center">
+                <div className="lg:w-140 lg:h-170 md:w-120 w-90 h-160  bg-white rounded-2xl shadow-2xl p-6 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="lg:w-120 w-100 h-120 lg:h-140 bg-gray-100 rounded-lg mb-4 relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-b from-blue-400 to-blue-600 opacity-10"></div>
+                    <div className="lg:w-120 w-90 md:w-100 h-140 lg:h-140 px-2 bg-gray-100 rounded-lg mb-4 relative overflow-hidden">
                       <div className="absolute top-0 left-4 right-4">
                         <div className="bg-blue-600 text-white my-4 px-3 py-1 rounded-full text-xs font-semibold mb-2">
                           FOOD CHEMICAL
@@ -439,7 +438,7 @@ const ProductDetail = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 mt-16">
+      <footer className="bg-gray-800 text-white py-8 mt-16 pt-8">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div className="flex items-center justify-center space-x-4 mb-4">
             <div>

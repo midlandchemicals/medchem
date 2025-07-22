@@ -50,7 +50,7 @@ const ProductCard: React.FC<{ product: productDetails }> = ({ product }) => {
       onClick={() => handleClick(product.id)}
       onMouseEnter={() => setCard(product.name)}
       onMouseLeave={() => setCard(null)}
-      className="rounded-xl relative border p-6 cursor-pointer"
+      className="rounded-xl relative border flex flex-col items-center justify-center min-w-[320px] max-w-[320px] p-6 cursor-pointer"
     >
       <span
         className={`absolute  top-8 bg right-8 font-bold px-4 rounded-full p-2 z-10 text-sm text-white ${getBgClass(
@@ -64,7 +64,7 @@ const ProductCard: React.FC<{ product: productDetails }> = ({ product }) => {
       </div>
       <div className="py-5">
         <div className="flex flex-col gap-y-2">
-          <h1 className="font-medium text-nowrap overflow-hidden text-ellipsis text-xl">
+          <h1 className="font-medium text-nowrap max-w-[260px] md:max-w-auto  overflow-hidden text-ellipsis text-xl">
             {product.name}
           </h1>
           <span className="border rounded-full text-[#4c4c4c] px-2 py-1 text-sm font-semibold w-fit">
@@ -90,7 +90,7 @@ const ProductCard: React.FC<{ product: productDetails }> = ({ product }) => {
         } rounded py-2`}
       >
         <span
-          className={`w-fit gap-x-2 items-center flex ${
+          className={`w-fit px-16 py-2 text-[#4c4c4c] text-lg gap-x-2 items-center flex ${
             card === product.name ? "text-white" : ""
           }   font-medium m-auto`}
         >

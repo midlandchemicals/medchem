@@ -119,6 +119,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --breakpoint-2xl: 1430px;
+  --breakpoint-2xl1: 1400px;
+  --breakpoint-1xl: 1190px;
 }
 
 @custom-variant dark (&:is(.dark *));
