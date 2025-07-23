@@ -201,7 +201,7 @@ const ProductDetail = () => {
               </div>
               <div>
                 <h1 className="lg:text-2xl text-nowrap text-xl font-bold text-gray-800">
-                  Midchem Speciality
+                  Midland Chemicals
                 </h1>
                 <p className="md:text-sm text-xs text-blue-600 font-medium">
                   Professional Cleaning Solutions
@@ -616,7 +616,7 @@ const ProductDetail = () => {
             <div>
               <img src={logo} className="lg:h-18 h-12 w-20 lg:w-40" alt="" />
             </div>
-            <span className="text-xl font-bold">Midchem Speciality</span>
+            <span className="text-xl font-bold">Midland Chemicals</span>
           </div>
           <p className="text-gray-400">
             Professional Glass Cleaning Solutions - Crystal Clear Results

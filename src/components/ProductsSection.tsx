@@ -14,9 +14,11 @@ import {
 } from "lucide-react";
 import { ImageWithFallback } from "./ui/ImageWithFallback";
 import { useNavigate } from "react-router-dom";
+import useProductStore from "../store";
 
 export function ProductsSection() {
   const navigate = useNavigate();
+  const { setSelectedChemical } = useProductStore();
   const industryCategories = [
     {
       id: 1,
@@ -270,7 +272,30 @@ export function ProductsSection() {
                     <Button
                       variant="outline"
                       className="w-full cursor-pointer py-3 text-base"
-                      onClick={() => navigate("/products")}
+                      onClick={() => {
+                        navigate("/products");
+                        if (
+                          category.title === "Automotive" ||
+                          category.title === "Power Generation"
+                        ) {
+                          setSelectedChemical("Automotive Chemicals");
+                        } else if (category.title === "Industrial Cleaning") {
+                          setSelectedChemical("Paint Strippers");
+                        } else if (category.title === "Construction") {
+                          setSelectedChemical("Building Chemicals");
+                        } else if (category.title === "Agricultural") {
+                          setSelectedChemical("Food Processing");
+                        } else if (
+                          category.title === "Aerospace" ||
+                          category.title === "Education"
+                        ) {
+                          setSelectedChemical("Speciality Chemicals");
+                        } else if (category.title === "Retail") {
+                          setSelectedChemical("Paint Strippers");
+                        } else if (category.title === "Healthcare") {
+                          setSelectedChemical("Hand Cleaners");
+                        }
+                      }}
                     >
                       Learn More
                     </Button>

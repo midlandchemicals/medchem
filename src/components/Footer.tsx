@@ -46,7 +46,7 @@ export function Footer() {
             <div className="flex items-center space-x-3">
               <img
                 src={logo}
-                alt="Midland Chemicals Ltd - Midchem Speciality"
+                alt="Midland Chemicals Ltd Logo"
                 className="h-16 w-auto"
               />
             </div>

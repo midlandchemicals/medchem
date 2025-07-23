@@ -4,15 +4,16 @@ import useProductStore from "../store";
 import type { productDetails } from "./ProductCard";
 
 const topLen = {
-  "Speciality Chemicals": "top-68",
-  "Toilet and Washroom": "top-69",
-  "Kitchen & Catering Chemicals": "top-64",
-  "Paint Strippers": "top-66",
-  "Drain Chemicals": "top-66",
-  "Food Processing": "top-64",
-  "Hand Cleaners": "top-68",
-  "Automotive Chemicals": "top-64",
+  "Speciality Chemicals": "top-62",
+  "Toilet and Washroom": "top-64",
+  "Kitchen & Catering Chemicals": "top-62",
+  "Paint Strippers": "top-62",
+  "Drain Chemicals": "top-62",
+  "Food Processing": "top-60  ",
+  "Hand Cleaners": "top-62",
+  "Automotive Chemicals": "top-60",
   "Building Chemicals": "top-64",
+  "Floor Chemicals": "top-59",
 };
 
 const ProductImg: React.FC<{ product: productDetails }> = ({ product }) => {

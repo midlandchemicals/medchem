@@ -22,7 +22,7 @@ export function Navigation() {
           <div className="flex-shrink-0 flex items-center">
             <img
               src={logo}
-              alt="Midland Chemicals Ltd - Midchem Speciality"
+              alt="Midland Chemicals Ltd logo"
               className="h-16 w-auto"
             />
           </div>

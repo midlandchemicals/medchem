@@ -2932,7 +2932,7 @@ export const bottleImages = {
     import.meta.url
   ).href,
   "Kitchen & Catering Chemicals": new URL(
-    "../assets/bottles/bottleKitchen.jpg",
+    "../assets/bottles/bottleKitchen.png",
     import.meta.url
   ).href,
   "Paint Strippers": new URL(
