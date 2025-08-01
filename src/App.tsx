@@ -7,7 +7,7 @@ import ProductCatalog from "./components/ProductCatalouge";
 
 import { ProductsSection } from "./components/ProductsSection";
 import { ServicesSection } from "./components/ServicesSection";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ProductDetail from "./components/ProductDetail";
 
 function App() {
@@ -31,6 +31,8 @@ function App() {
       />
       <Route path="/products" element={<ProductCatalog />} />
       <Route path="/products/:id" element={<ProductDetail />} />
+      {/* ✅ Catch-all route for unknown paths */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
